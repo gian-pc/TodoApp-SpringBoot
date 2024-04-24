@@ -1,11 +1,24 @@
 package com.gianpc.restapis.controllers;
 
 import com.gianpc.restapis.domains.Todo;
+import com.gianpc.restapis.services.TodoService;
+import com.gianpc.restapis.services.TodoTypeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/todo")
 public class TodoController {
+
+    private TodoService todoService;
+    private TodoTypeService todoTypeService;
+
+    @Autowired
+    public TodoController(TodoService todoService, TodoTypeService todoTypeService) {
+        this.todoService = todoService;
+        this.todoTypeService = todoTypeService;
+    }
+
     // Aquí se implementan  todas las  operaciones  REST
     // Spring MVC a implementado los métodos HTTP
     // GET, POST, PUT, DELETE
