@@ -36,10 +36,10 @@ public class TodoTypeController {
         return todoType;
     }
 
-    @PostMapping(value="/create", consumes = {"application/json", "application/xml"}, produces = {"application/json", "application/xml"})
+    @PostMapping(value="/create", produces = {"application/json", "application/xml"})
     public TodoType createTodoType() {
         TodoType todoType = new TodoType();
-        todoType.setCode("PERSONAL");
+        todoType.setCode("PROFESSIONAL");
         todoType.setDescription("Todo para profesional work");
         return todoType;
     }
