@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@JsonPropertyOrder(alphabetic = true) // Para que se ordene alfabéticamente
+@JsonPropertyOrder({"description", "code"}) // Para personalizar el orden de los campos en el JSON
 //@XmlRootElement // Para que pueda ser convertido a XML
 public class TodoType {
     private  String code;
