@@ -3,12 +3,13 @@ package com.gianpc.restapis.services;
 import com.gianpc.restapis.domains.Todo;
 import com.gianpc.restapis.repositories.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service // proveernos una sola instancia SINGLETON de esta clase durante toda la ejecución de la aplicacion
 public class TodoService {
@@ -52,4 +53,14 @@ public class TodoService {
         }
         todoRepository.deleteById(id);
     }
+
+    // creando paginación
+    public List<Todo> findAll(String sort, Sort.Direction order, int pageNumber, int numOfRecords) {
+        Sort idDesc = Sort.by(order, sort);
+        Pageable pageable = PageRequest.of(pageNumber, numOfRecords, idDesc);
+        Page<Todo> todoPages = todoRepository.findAll(pageable);
+        return todoPages.getContent();
+    }
+
+
 }

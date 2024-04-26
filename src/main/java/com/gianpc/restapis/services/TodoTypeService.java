@@ -6,6 +6,10 @@ import jakarta.persistence.SecondaryTable;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
@@ -55,5 +59,13 @@ public class TodoTypeService {
             throw new Exception("No existe el " + code);
         }
         todoTypeRepository.deleteById(code);
+    }
+
+    public List<TodoType> findAll(String sort, Sort.Direction order, int pageNumber, int numOfRecords) {
+        Sort idDesc = Sort.by(order, sort);
+        Pageable pageRequest = PageRequest.of(pageNumber, numOfRecords, idDesc);
+        Page<TodoType> todoTypePages = todoTypeRepository.findAll(pageRequest);
+        List<TodoType> todoTypes = todoTypePages.getContent();
+        return todoTypes;
     }
 }
