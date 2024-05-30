@@ -1,11 +1,13 @@
 package com.gianpc.restapis.repositories;
 
 import com.gianpc.restapis.domains.Todo;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public interface TodoRepository extends CrudRepository<Todo, Long>, PagingAndSortingRepository<Todo, Long> {
@@ -26,4 +28,10 @@ public interface TodoRepository extends CrudRepository<Todo, Long>, PagingAndSor
     long countByDateCreatedGreaterThanAndDueDate(Date dateCreated, Date dueDate);
     void deleteById(long id);
     long deleteByTitleAndDone(String title, Boolean done);
+
+    @Query("SELECT t FROM Todo t WHERE t.done = true")
+    List<Todo> readAllDone();
+
+    @Query("SELECT t FROM Todo t WHERE t.dateCreated >= ?1 AND t.dueDate = ?2")
+    List<Todo> fetchTodos(Date dateCreated, Date dueDate);
 }
