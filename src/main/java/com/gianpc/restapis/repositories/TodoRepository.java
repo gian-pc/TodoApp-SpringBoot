@@ -34,4 +34,8 @@ public interface TodoRepository extends CrudRepository<Todo, Long>, PagingAndSor
 
     @Query("SELECT t FROM Todo t WHERE t.dateCreated >= ?1 AND t.dueDate = ?2")
     List<Todo> fetchTodos(Date dateCreated, Date dueDate);
+
+    // Ahora ya puedo integrar mis Named Queries en Spring Data
+    List<Todo> fetchAllDone();
+    List<Todo> fetchAllByName(String title);
 }

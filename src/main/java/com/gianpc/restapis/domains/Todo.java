@@ -11,7 +11,8 @@ import java.util.Date;
 
 @Data
 @Entity
-//@Table(name = "todos") // cambiar el nombre de la tabla
+@NamedQuery(name = "Todo.fetchAllDone", query = "SELECT t FROM Todo t WHERE t.done = true")
+@NamedQuery(name = "Todo.fetchAllByName", query = "SELECT t FROM Todo t WHERE t.title = ?1")
 public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // IDENTITY, SEQUENCE, TABLE
