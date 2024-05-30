@@ -4,6 +4,7 @@ import com.gianpc.restapis.domains.Todo;
 import com.gianpc.restapis.domains.TodoType;
 import com.gianpc.restapis.services.TodoService;
 import com.gianpc.restapis.services.TodoTypeService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,7 @@ public class TodoController {
     // No se ve la información que se envía a menos que se intercepte
     // Se recomienda usar HTTPS para que el response y el request esten cifrados
     @PostMapping
-    public Todo create(@RequestBody Todo todo){ // Recibe un objeto de tipo Todo y la anotación @RequestBody lo convierte a un objeto de tipo Todo
+    public Todo create(@Valid @RequestBody Todo todo){ // Recibe un objeto de tipo Todo y la anotación @RequestBody lo convierte a un objeto de tipo Todo
         return todoService.create(todo);
     }
 
