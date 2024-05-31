@@ -1,6 +1,7 @@
 package com.gianpc.restapis.services;
 
 import com.gianpc.restapis.domains.Todo;
+import com.gianpc.restapis.events.TodoCreationEvent;
 import com.gianpc.restapis.repositories.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -8,6 +9,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.*;
 
@@ -21,11 +25,16 @@ public class TodoService {
         this.todoRepository = todoRepository;
     }
 
-    //    private static Map<Long, Todo> todoCollection = new HashMap<>();
-//    private static long idCount = 1L;
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    public void handleTodoCreationEvent(TodoCreationEvent todoCreationEvent){
+        System.out.println("Handled TodoCreationEvent.....");
+    }
 
 
+    @Transactional
     public Todo create(Todo todo) {
+        todo.afterSave(); // registrar el TodoCreationEvent
         return todoRepository.save(todo);
     }
 
