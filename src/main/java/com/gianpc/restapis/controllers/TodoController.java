@@ -4,6 +4,7 @@ import com.gianpc.restapis.domains.Todo;
 import com.gianpc.restapis.domains.TodoType;
 import com.gianpc.restapis.services.TodoService;
 import com.gianpc.restapis.services.TodoTypeService;
+import com.gianpc.restapis.utils.aop.LogMethodDetails;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -43,8 +44,16 @@ public class TodoController {
     // GET solo puede mandar 2048 caracteres
     // Si se ve la información que se envía
     @GetMapping("/{id}")
-    public Todo read(@PathVariable("id") Long id){ // Lo que esta en el path eso que se llama id pásamelo a Long id
-        return todoService.findById(id);
+    // Yo quiero saber cuando llaman al read
+    // El controller  nunca se entera que lo estan mirando
+    @LogMethodDetails
+    public ResponseEntity<Todo> read(@PathVariable("id") Long id){ // Lo que esta en el path eso que se llama id pásamelo a Long id
+        Todo todo = todoService.findById(id);
+        if(null!=todo){
+            return new ResponseEntity<>(todo, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     // El PUT sirve para un update
@@ -65,6 +74,7 @@ public class TodoController {
     }
 
     @GetMapping()
+    @LogMethodDetails
     public List<Todo> findAll(@RequestParam String sort, @RequestParam String order, @RequestParam int pageNumber, @RequestParam int numOfRecords) {
         return todoService.findAll(sort, Sort.Direction.fromString(order) , pageNumber, numOfRecords);
     }
