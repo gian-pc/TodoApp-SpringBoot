@@ -1,6 +1,7 @@
 package com.gianpc.restapis.repositories;
 
 import com.gianpc.restapis.domains.Todo;
+import com.gianpc.restapis.domains.TodoType;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -38,4 +39,7 @@ public interface TodoRepository extends CrudRepository<Todo, Long>, PagingAndSor
     // Ahora ya puedo integrar mis Named Queries en Spring Data
     List<Todo> fetchAllDone();
     List<Todo> fetchAllByName(String title);
+
+    List<Todo> findAllByTodoType(TodoType personal);
+
 }
